@@ -109,7 +109,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
     var body = _.pick(req.body,['username','email']); // allow which property users can update
     UserSchema.findOneAndUpdate(id,{$set: body},{new:true}).then((updatedData)=>{
     if(type === "Employee"){
-        secondBody = _.pick(req.body,['full_name','birthdate','specialization']);
+        secondBody = _.pick(req.body,['full_name','birthdate','specialization','skill']);
         var thirdBody = _.pick(req.body,['description']);
         if(Object.keys(thirdBody).length === 0 && thirdBody.constructor === Object || thirdBody.description.content.length < 10 ){
             //Check for empty object or object shorter then 10 index of description posted
@@ -245,7 +245,7 @@ router.patch('/feed/:id', (req,res)=>{
                 JobSchema.find({
                     $or : objArr
                 }).then((yourcompanywhowantsyou)=>{ 
-                    
+                    var jobArr= [];
                     var listArr = [];
                     var sum = 0 ;                   
                     yourcompanywhowantsyou.forEach(jobList => {  
@@ -274,7 +274,8 @@ router.patch('/feed/:id', (req,res)=>{
                                 } 
                             }
                         }
-                        if (sum >0.60 ){                                  
+                        if (sum >0.60 ){
+                            jobArr.push(jobList);
                             console.log("More then 60%!",jobList._id," is a ",Math.round(sum*100) ,"% matched!");                
                             for(var i = 0 ; i<employeeData.potentional_jobs.length;i++){
                                 if(employeeData.potentional_jobs[i].job_id == jobList._id && employeeData.potentional_jobs[i].company_id ==jobList.company_id){
@@ -282,11 +283,13 @@ router.patch('/feed/:id', (req,res)=>{
                                 }
                             }
                             if (v){
-                                listArr.push({
-                                    job_id: jobList._id,
-                                    company_id: jobList.company_id,
-                                    employee_id: employeeData._id,
-                                });
+                                // listArr.push({
+                                //     job_id: jobList._id,
+                                //     company_id: jobList.company_id,
+                                //     employee_id: employeeData._id,
+                                // });
+                                console.log(jobList);
+                                listArr.push(jobList);
                             }
                             sum = 0;
                         }
@@ -297,16 +300,17 @@ router.patch('/feed/:id', (req,res)=>{
                     });
                     if(listArr === undefined || listArr.length == 0){
                         // add array together
-                        var companyID = [];
-                        for(var i = 0; i<employeeData.potentional_jobs.length;i++){
-                            companyID.push({
-                                _id : employeeData.potentional_jobs[i].company_id
-                            })
-                        }
-                        CompanySchema.find({$or: companyID}).then((data)=>{
-                            console.log("The old data :",data);           
-                            res.send(data);
-                        })
+                        // var companyID = [];
+                        // for(var i = 0; i<employeeData.potentional_jobs.length;i++){
+                        //     companyID.push({
+                        //         _id : employeeData.potentional_jobs[i].company_id
+                        //     })
+                        // }
+                        // CompanySchema.find({$or: companyID}).then((data)=>{
+                        //     console.log("The old data :",data);           
+                        //     res.send(data);
+                            res.send(jobArr);
+                        // })
                         
                        // res.send("Potential jobs for employee and company is already updated!");
                     }else{
@@ -315,7 +319,7 @@ router.patch('/feed/:id', (req,res)=>{
                         for(var i = 0; i<listArr.length;i++){
                            c =  c.concat({
                                 matched_date: Date.now(),
-                                job_id: listArr[i].job_id,
+                                job_id: listArr[i]._id,
                                 company_id: listArr[i].company_id
                             });
                             companyCode =  companyCode.concat(`updateCompany(listArr[${i}].job_id,listArr[${i}].company_id,listArr[${i}].employee_id),`);
@@ -323,19 +327,21 @@ router.patch('/feed/:id', (req,res)=>{
                         }
                          var code  = eval(companyCode.slice(0, -1));
                          
-                        console.log(listArr);
-                        Promise.all([updateEmployee(c,listArr[0].employee_id),code])
+                        console.log("List of c ",c);
+                        Promise.all([updateEmployee(c,listArr[0]._id),code])
                         .then(() =>{
-                            var companyID = [];
-                            for(var i = 0; i<c.length;i++){
-                                companyID.push({
-                                    _id : c[i].company_id
-                                })
-                            }
-                            CompanySchema.find({$or: companyID}).then((data)=>{
-                                console.log("The New data :",data);
-                                res.send(data);
-                            })
+                            res.send({listArr});
+                            // var companyID = [];
+                            // for(var i = 0; i<c.length;i++){
+                            //     companyID.push({
+                            //         _id : c[i].company_id
+                            //     })
+                            // }
+                            // CompanySchema.find({$or: companyID}).then((data)=>{
+                            //     console.log("The New data :",data);
+                            //     res.send(data);
+                                
+                            // });
                         });
                     }               
                 });
