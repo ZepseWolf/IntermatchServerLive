@@ -330,7 +330,7 @@ router.patch('/feed/:id', (req,res)=>{
                         console.log("List of c ",c);
                         Promise.all([updateEmployee(c,listArr[0]._id),code])
                         .then(() =>{
-                            res.send({listArr});
+                            res.send(listArr);
                             // var companyID = [];
                             // for(var i = 0; i<c.length;i++){
                             //     companyID.push({
