@@ -14,7 +14,7 @@ var EmployeeSchema = mongoose.model('EmployeeSchema',{// the text here are use t
         type: String
     },
     birthdate:{
-        type: String
+        type: Date
     },
     description:[{
         _id: { 
@@ -26,7 +26,7 @@ var EmployeeSchema = mongoose.model('EmployeeSchema',{// the text here are use t
         },
         content: String,
         created : {    
-            type: Number,
+            type: Date,
             default:Date.now()
         }
     }],
@@ -45,7 +45,7 @@ var EmployeeSchema = mongoose.model('EmployeeSchema',{// the text here are use t
         },
         
         matched_date : {    
-            type: String,
+            type: Date,
             default:Date.now()
         },
         job_id: {
@@ -59,8 +59,8 @@ var EmployeeSchema = mongoose.model('EmployeeSchema',{// the text here are use t
             required : false
         },
         instution_name: String,
-        start_date: String,
-        end_date: String,
+        start_date: Date,
+        end_date: Date,
         certification: String
     }],
     experiences:[{
@@ -70,8 +70,8 @@ var EmployeeSchema = mongoose.model('EmployeeSchema',{// the text here are use t
         },
         job_position : String,
         company_name : String,
-        start_date: String,
-        end_date: String,
+        start_date: Date,
+        end_date: Date,
         description: String
     }],
     trait_needs:Array,

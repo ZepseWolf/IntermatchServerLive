@@ -35,7 +35,7 @@ var CompanySchema = mongoose.model('CompanySchema',{// the text here are use to 
             required : false
         },
         matched_date : {    
-            type: String,
+            type: Date,
             default:Date.now()
         },
         employee_id: String,

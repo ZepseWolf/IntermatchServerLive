@@ -10,15 +10,15 @@ var JobSchema = mongoose.model('JobSchema',{// the text here are use to target s
     
     title: String,
     description: String,
-    start_date: String,
-    end_date: String,
+    start_date: Date,
+    end_date: Date,
     company_id: String,// not needed
     specialization: String,
     created_date:{
-        type: String,
+        type: Date,
         default:Date.now()
     },
-    deadline: String,
+    deadline: Date,
     require_skills: String,
     require_trait_needs:Array,
     require_trait_personality:Array, 
