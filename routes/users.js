@@ -154,8 +154,8 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
                         trait_rank : x+1
                        });
                       }
-                      
-                      EmployeeSchema.findOneAndUpdate({_id :id },{$set:{trait_needs: needsArr , trait_personality: personalityArr, trait_values:valuesArr,secondBody}},{new:true}).then((updatedData)=>{
+                      console.log();
+                      EmployeeSchema.findOneAndUpdate({_id :id },{$set: Object.assign({trait_needs: needsArr , trait_personality: personalityArr, trait_values:valuesArr},secondBody)},{new:true}).then((updatedData)=>{
                         console.log( "Api finished parsin");
                         res.send({updatedData});
                       });
