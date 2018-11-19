@@ -516,7 +516,7 @@ router.get('/jobposting/:id',(req,res)=>{
 
         //how to use > /jobposting/edit/_id/job_position.job_id
         //             /jobposting/add/_id
-        res.send({data});
+        res.send(data);
     });
 });
 router.post('/jobposting/add/:id',(req,res)=>{
