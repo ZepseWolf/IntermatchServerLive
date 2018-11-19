@@ -520,7 +520,7 @@ router.get('/jobposting/:id',(req,res)=>{
 });
 
 router.get('/getJobpostingById/:id',(req,res)=>{
-    JobSchema.find({_id:req.params.id}).then((data,err)=>{
+    JobSchema.findById({_id:req.params.id}).then((data,err)=>{
         if(err)
         res.status(404).send(err);
 
