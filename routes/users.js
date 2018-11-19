@@ -157,7 +157,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
                       console.log();
                       EmployeeSchema.findOneAndUpdate({_id :id },{$set: Object.assign({trait_needs: needsArr , trait_personality: personalityArr, trait_values:valuesArr},secondBody)},{new:true}).then((updatedData)=>{
                         console.log( "Api finished parsin");
-                        res.send({updatedData});
+                        res.send(updatedData);
                       });
                     }
                 });
@@ -176,7 +176,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
                 return res.status(404).send();
              }
              //console.log(updatedData);
-             res.send({updatedData});
+             res.send(updatedData);
            });
     }
  
@@ -588,7 +588,7 @@ router.patch('/jobposting/edit/:jobID',(req,res)=>{
             'require_skills' : req.body.require_skills
             } 
         },{new:true}).then((updatedData)=>{
-        res.send({updatedData});
+        res.send(updatedData);
     });
 });
 
