@@ -513,6 +513,16 @@ router.get('/jobposting/:id',(req,res)=>{
     JobSchema.find({company_id:req.params.id}).then((data,err)=>{
         if(err)
         res.status(404).send(err);
+        //how to use > /jobposting/edit/_id/job_position.job_id
+        //             /jobposting/add/_id
+        res.send(data);
+    });
+});
+
+router.get('/getJobpostingById/:id',(req,res)=>{
+    JobSchema.find({_id:req.params.id}).then((data,err)=>{
+        if(err)
+        res.status(404).send(err);
 
         //how to use > /jobposting/edit/_id/job_position.job_id
         //             /jobposting/add/_id
