@@ -32,7 +32,7 @@ router.post('/register', (req,res)=>{
           email : req.body.email,
           user_type : req.body.user_type
       });
-  }else{
+  }else if (req.body.user_type == "Company"){
       console.log("Company");
       var user = new CompanySchema({
           _id: newID
@@ -105,9 +105,9 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
     var id = req.params.id;
     var type = req.params.type;
     var secondBody ;
-    var database = eval(`${type}Schema`);
+    
     var body = _.pick(req.body,['username','email']); // allow which property users can update
-    UserSchema.findOneAndUpdate(id,{$set: body},{new:true}).then((updatedData)=>{
+    UserSchema.findOneAndUpdate({_id:id},{$set: body},{new:true}).then((updatedData)=>{
     if(type === "Employee"){
         secondBody = _.pick(req.body,['full_name','birthdate','specialization','skill']);
         var thirdBody = _.pick(req.body,['description']);
@@ -116,7 +116,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
             console.log("The description is empty/short hence -NO API IS CALLED-" );
         }else{
             //excute > save new data
-            database.findOneAndUpdate({_id: id},{
+            EmployeeSchema.findOneAndUpdate({_id: id},{
                 $push: thirdBody
                },{new:true}).then((updatedData)=>{
                  if(!updatedData){
@@ -155,7 +155,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
                        });
                       }
                       
-                      database.findOneAndUpdate({_id :id },{$set:{trait_needs: needsArr , trait_personality: personalityArr, trait_values:valuesArr,secondBody}},{new:true}).then((updatedData)=>{
+                      EmployeeSchema.findOneAndUpdate({_id :id },{$set:{trait_needs: needsArr , trait_personality: personalityArr, trait_values:valuesArr,secondBody}},{new:true}).then((updatedData)=>{
                         console.log( "Api finished parsin");
                         res.send({updatedData});
                       });
@@ -169,7 +169,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
     else if (type === "Company"){
         //company
         secondBody = _.pick(req.body,['company_name','bio','address','phone_no', 'company_type']);
-        database.findOneAndUpdate({_id: id},{
+        CompanySchema.findOneAndUpdate({_id: id},{
             $set: secondBody
            },{new:true}).then((updatedData)=>{
              if(!updatedData){
