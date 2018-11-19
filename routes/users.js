@@ -510,14 +510,12 @@ router.patch('/feed/:id', (req,res)=>{
 });
 //company
 router.get('/jobposting/:id',(req,res)=>{
-    console.log("meow")
-    JobSchema.findById({_id:req.params.id}, (err,data)=>{
+    JobSchema.find({company_id:req.params.id}).then((data,err)=>{
         if(err)
         res.status(404).send(err);
 
         //how to use > /jobposting/edit/_id/job_position.job_id
         //             /jobposting/add/_id
-
         res.send({data});
     });
 });
