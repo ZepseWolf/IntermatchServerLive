@@ -109,7 +109,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
     var body = _.pick(req.body,['username','email']); // allow which property users can update
     UserSchema.findOneAndUpdate({_id:id},{$set: body},{new:true}).then((userData)=>{
     if(type === "Employee"){
-        secondBody = _.pick(req.body,['full_name','birthdate','specialization','skill']);
+        secondBody = _.pick(req.body,['full_name','birthdate','specialization']);
         var thirdBody = _.pick(req.body,['description']);
         if(Object.keys(thirdBody).length === 0 && thirdBody.constructor === Object || thirdBody.description.content.length < 10 ){
             //Check for empty object or object shorter then 10 index of description posted
@@ -175,8 +175,8 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
              if(!updatedData){
                 return res.status(404).send();
              }
-             var s = {userData, updatedData};
-            console.log(s);
+             var s = Object.assign({email:userData.email,username:userData.username},updatedData);
+            console.log();
              res.send(s);
            });
     }
@@ -195,7 +195,8 @@ router.get('/userprofile/:id',(req,res)=>{
     UserSchema.findById({_id: req.params.id}).then((userSchema)=>{ 
         var database = eval(`${userSchema.user_type}Schema`);
         database.findById({_id: req.params.id}).then(result=>{
-            res.send(result);
+            res.send(Object.assign(userSchema,result.toObject()));
+            
         })
     },(err) =>{
             res.status(400).send(err);

@@ -77,13 +77,7 @@ var EmployeeSchema = mongoose.model('EmployeeSchema',{// the text here are use t
     trait_needs:Array,
     trait_personality:Array, 
     trait_values:Array,  
-    skill:[{
-        _id: { 
-            type: String,
-            required : false
-        },
-        skill_name : String
-    }],
+    
     //Sub doc end
     // to add  information of the user 
 });
