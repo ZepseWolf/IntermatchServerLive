@@ -175,7 +175,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
              if(!updatedData){
                 return res.status(404).send();
              }
-             var s = Object.assign(userData, updatedData);
+             var s = {userData, updatedData};
             console.log(s);
              res.send(s);
            });
