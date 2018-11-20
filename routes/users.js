@@ -107,7 +107,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
     var secondBody ;
     
     var body = _.pick(req.body,['username','email']); // allow which property users can update
-    UserSchema.findOneAndUpdate({_id:id},{$set: body},{new:true}).then((updatedData)=>{
+    UserSchema.findOneAndUpdate({_id:id},{$set: body},{new:true}).then((userData)=>{
     if(type === "Employee"){
         secondBody = _.pick(req.body,['full_name','birthdate','specialization','skill']);
         var thirdBody = _.pick(req.body,['description']);
@@ -175,8 +175,9 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
              if(!updatedData){
                 return res.status(404).send();
              }
-             //console.log(updatedData);
-             res.send(updatedData);
+             var s = {userData, updatedData};
+            console.log(s);
+             res.send(userData);
            });
     }
  
@@ -356,7 +357,6 @@ router.patch('/feed/:id', (req,res)=>{
                         matched_date: Date.now(),
                         job_id: jobID,
                         company_id: companyID
-                        
                     } 
                 }}).then();
             }    

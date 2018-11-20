@@ -26,7 +26,7 @@ var EmployeeSchema = mongoose.model('EmployeeSchema',{// the text here are use t
         },
         content: String,
         created : {    
-            type: Date,
+            type: Number,
             default:Date.now()
         }
     }],
