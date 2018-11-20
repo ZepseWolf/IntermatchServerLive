@@ -107,7 +107,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
     var secondBody ;
     
     var body = _.pick(req.body,['username','email']); // allow which property users can update
-    UserSchema.findOneAndUpdate({_id:id},{$set: body},{new:true}).then((userData)=>{
+    UserSchema.findOneAndUpdate({_id:id},{$set: body},{new:true}).then((userSchema)=>{
     if(type === "Employee"){
         secondBody = _.pick(req.body,['full_name','birthdate','specialization']);
         var thirdBody = _.pick(req.body,['description']);
@@ -171,11 +171,11 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
         secondBody = _.pick(req.body,['company_name','bio','address','phone_no', 'company_type']);
         CompanySchema.findOneAndUpdate({_id: id},{
             $set: secondBody
-           },{new:true}).then((updatedData)=>{
+           },{new:true}).then((userTypeSchema)=>{
              if(!updatedData){
                 return res.status(404).send();
              }
-             var s = Object.assign({email:userData.email,username:userData.username},updatedData);
+             var s = {userSchema,userTypeSchema};
             console.log();
              res.send(s);
            });
@@ -194,8 +194,8 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
 router.get('/userprofile/:id',(req,res)=>{
     UserSchema.findById({_id: req.params.id}).then((userSchema)=>{ 
         var database = eval(`${userSchema.user_type}Schema`);
-        database.findById({_id: req.params.id}).then(result=>{
-            res.send(Object.assign(userSchema,result.toObject()));
+        database.findById({_id: req.params.id}).then(usertypeSchema=>{
+            res.send({userSchema,usertypeSchema});
             
         })
     },(err) =>{
