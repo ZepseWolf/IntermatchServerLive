@@ -111,12 +111,13 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
     if(type === "Employee"){
         secondBody = _.pick(req.body,['full_name','birthdate','specialization']);
         var thirdBody = _.pick(req.body,['description']);
-        if(Object.keys(thirdBody).length === 0 && thirdBody.constructor === Object || thirdBody.description.content.length < 10 || !thirdBody.description.content){
+        console.log(thirdBody);
+        if( !thirdBody.description.content){
             //Check for empty object or object shorter then 10 index of description posted
             console.log("The description is empty/short hence -NO API IS CALLED-" );
         }else{
             //excute > save new data
-            console.log(thirdBody);
+           
             EmployeeSchema.findOneAndUpdate({_id: id},{
                 $push: thirdBody
                },{new:true}).then((updatedData)=>{
