@@ -116,6 +116,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
             console.log("The description is empty/short hence -NO API IS CALLED-" );
         }else{
             //excute > save new data
+            console.log(thirdBody);
             EmployeeSchema.findOneAndUpdate({_id: id},{
                 $push: thirdBody
                },{new:true}).then((updatedData)=>{
