@@ -111,7 +111,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
     if(type === "Employee"){
         secondBody = _.pick(req.body,['full_name','birthdate','specialization']);
         var thirdBody = _.pick(req.body,['description']);
-        if(Object.keys(thirdBody).length === 0 && thirdBody.constructor === Object || thirdBody.description.content.length < 10 ){
+        if(Object.keys(thirdBody).length === 0 && thirdBody.constructor === Object || thirdBody.description.content.length < 10 || !thirdBody.description.content){
             //Check for empty object or object shorter then 10 index of description posted
             console.log("The description is empty/short hence -NO API IS CALLED-" );
         }else{
@@ -146,12 +146,12 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
                            trait_rank : x+1
                        });
                        personalityArr.push({
-                        trait_name : _.orderBy(profile.personality, ['percentile'],['desc']).splice(0, 5)[x].name ,
-                        trait_rank : x+1
+                            trait_name : _.orderBy(profile.personality, ['percentile'],['desc']).splice(0, 5)[x].name ,
+                            trait_rank : x+1
                        });
                        valuesArr.push({
-                        trait_name : _.orderBy(profile.values, ['percentile'],['desc']).splice(0, 5)[x].name ,
-                        trait_rank : x+1
+                            trait_name : _.orderBy(profile.values, ['percentile'],['desc']).splice(0, 5)[x].name ,
+                            trait_rank : x+1
                        });
                       }
                       console.log();
@@ -172,11 +172,10 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
         CompanySchema.findOneAndUpdate({_id: id},{
             $set: secondBody
            },{new:true}).then((userTypeSchema)=>{
-             if(!updatedData){
+             if(!userTypeSchema){
                 return res.status(404).send();
              }
              var s = {userSchema,userTypeSchema};
-            console.log();
              res.send(s);
            });
     }
