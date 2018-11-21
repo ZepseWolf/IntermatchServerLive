@@ -112,7 +112,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
         secondBody = _.pick(req.body,['full_name','birthdate','specialization']);
         var thirdBody = _.pick(req.body,['description']);
         console.log(thirdBody);
-        if( !thirdBody.description.content){
+        if(Object.keys(thirdBody).length === 0 && thirdBody.constructor === Object || thirdBody.description.content.length < 10 || !thirdBody.description.content){
             //Check for empty object or object shorter then 10 index of description posted
             console.log("The description is empty/short hence -NO API IS CALLED-" );
         }else{
