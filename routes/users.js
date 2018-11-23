@@ -454,10 +454,15 @@ router.patch('/feed/:id', (req,res)=>{
                                     })
                                 }
                                 console.log(employeeID);
-                                EmployeeSchema.find({$or: employeeID}).then((data)=>{
-                                    console.log("The old data :",data);           
-                                    res.send(data);
-                                })
+                                if(employeeID,lenght < 0 ){
+                                    res.send([]);
+                                }else{
+                                    EmployeeSchema.find({$or: employeeID}).then((data)=>{
+                                        console.log("The old data :",data);           
+                                        res.send(data);
+                                    })
+                                }
+                                
                               
                             }else if (jobListByCompany.length == loopCount){
                                 var c= companySchema.potential_employee;
