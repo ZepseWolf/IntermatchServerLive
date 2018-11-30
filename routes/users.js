@@ -333,6 +333,9 @@ router.patch('/feed/:id', (req,res)=>{
                         
                         Promise.all([updateEmployee(c,listArr[0]._id),code])
                         .then(() =>{
+                            for(var i =0 ; i< listArr.lenght;i++){
+                                console.log("Job Title matched " , listArr[i].title)
+                            }
                             res.send(listArr);
                             // var companyID = [];
                             // for(var i = 0; i<c.length;i++){
@@ -417,7 +420,7 @@ router.patch('/feed/:id', (req,res)=>{
                                 
                             }
                             if (sum >0.60 ){                                  
-                                console.log("More then 60%!",toMatchEmployee._id," is a ",Math.round(sum*100) ,"% matched!");
+                                console.log("More then 60%!",toMatchEmployee.full_name," is a ",Math.round(sum*100) ,"% matched!");
                                                 
                                 for(var i = 0 ; i<companySchema.potential_employee.length&&v ;i++){
                                     // check if matched before
@@ -460,7 +463,7 @@ router.patch('/feed/:id', (req,res)=>{
                                 }else{
                                     EmployeeSchema.find({$or: employeeID}).then((data)=>{
                                     for(var i = 0; i<data.length; i++){
-                                        console.log("The matched users:",data[i].full_name);
+                                        console.log("The matched employees:",data[i].full_name);
                                     }          
                                     res.send(data);
                                      })
@@ -495,7 +498,7 @@ router.patch('/feed/:id', (req,res)=>{
                                     }
                                     EmployeeSchema.find({$or: employeeID}).then((data)=>{
                                         for(var i = 0; i<data.length; i++){
-                                            console.log("The matched users:",data[i].full_name);
+                                            console.log("The matched employees:",data[i].full_name);
                                         }
                                         res.send(data);
                                     })
