@@ -107,15 +107,17 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
     var secondBody ;
     
     var body = _.pick(req.body,['username','email']); // allow which property users can update
-    UserSchema.findOneAndUpdate({_id:id},{$set: body},{new:true}).then((updatedData)=>{
+    UserSchema.findOneAndUpdate({_id:id},{$set: body},{new:true}).then((userSchema)=>{
     if(type === "Employee"){
-        secondBody = _.pick(req.body,['full_name','birthdate','specialization','skill']);
+        secondBody = _.pick(req.body,['full_name','birthdate','specialization']);
         var thirdBody = _.pick(req.body,['description']);
-        if(Object.keys(thirdBody).length === 0 && thirdBody.constructor === Object || thirdBody.description.content.length < 10 ){
+        console.log(thirdBody);
+        if(Object.keys(thirdBody).length === 0 && thirdBody.constructor === Object || thirdBody.description.content.length < 10 || !thirdBody.description.content){
             //Check for empty object or object shorter then 10 index of description posted
             console.log("The description is empty/short hence -NO API IS CALLED-" );
         }else{
             //excute > save new data
+           
             EmployeeSchema.findOneAndUpdate({_id: id},{
                 $push: thirdBody
                },{new:true}).then((updatedData)=>{
@@ -146,12 +148,12 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
                            trait_rank : x+1
                        });
                        personalityArr.push({
-                        trait_name : _.orderBy(profile.personality, ['percentile'],['desc']).splice(0, 5)[x].name ,
-                        trait_rank : x+1
+                            trait_name : _.orderBy(profile.personality, ['percentile'],['desc']).splice(0, 5)[x].name ,
+                            trait_rank : x+1
                        });
                        valuesArr.push({
-                        trait_name : _.orderBy(profile.values, ['percentile'],['desc']).splice(0, 5)[x].name ,
-                        trait_rank : x+1
+                            trait_name : _.orderBy(profile.values, ['percentile'],['desc']).splice(0, 5)[x].name ,
+                            trait_rank : x+1
                        });
                       }
                       console.log();
@@ -171,12 +173,12 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
         secondBody = _.pick(req.body,['company_name','bio','address','phone_no', 'company_type']);
         CompanySchema.findOneAndUpdate({_id: id},{
             $set: secondBody
-           },{new:true}).then((updatedData)=>{
-             if(!updatedData){
+           },{new:true}).then((userTypeSchema)=>{
+             if(!userTypeSchema){
                 return res.status(404).send();
              }
-             //console.log(updatedData);
-             res.send(updatedData);
+             var s = {userSchema,userTypeSchema};
+             res.send(s);
            });
     }
  
@@ -193,8 +195,9 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
 router.get('/userprofile/:id',(req,res)=>{
     UserSchema.findById({_id: req.params.id}).then((userSchema)=>{ 
         var database = eval(`${userSchema.user_type}Schema`);
-        database.findById({_id: req.params.id}).then(result=>{
-            res.send(result);
+        database.findById({_id: req.params.id}).then(usertypeSchema=>{
+            res.send({userSchema,usertypeSchema});
+            
         })
     },(err) =>{
             res.status(400).send(err);
@@ -356,7 +359,6 @@ router.patch('/feed/:id', (req,res)=>{
                         matched_date: Date.now(),
                         job_id: jobID,
                         company_id: companyID
-                        
                     } 
                 }}).then();
             }    
@@ -452,12 +454,17 @@ router.patch('/feed/:id', (req,res)=>{
                                     })
                                 }
                                 console.log(employeeID);
-                                EmployeeSchema.find({$or: employeeID}).then((data)=>{
+                                if(employeeID.lenght < 0 ){
+                                    console.log("Empty Matching")
+                                    res.send([]);
+                                }else{
+                                    EmployeeSchema.find({$or: employeeID}).then((data)=>{
                                     for(var i = 0; i<data.length; i++){
                                         console.log("The matched users:",data[i].full_name);
                                     }          
                                     res.send(data);
-                                })
+                                     })
+                                 }
                               
                             }else if (jobListByCompany.length == loopCount){
                                 var c= companySchema.potential_employee;
