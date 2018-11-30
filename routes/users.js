@@ -291,7 +291,7 @@ router.patch('/feed/:id', (req,res)=>{
                                 //     company_id: jobList.company_id,
                                 //     employee_id: employeeData._id,
                                 // });
-                                console.log(jobList);
+                                
                                 listArr.push(jobList);
                             }
                             sum = 0;
