@@ -413,7 +413,7 @@ router.patch('/feed/:id', (req,res)=>{
                                 
                             }
                             if (sum >0.60 ){                                  
-                                console.log("More then 60%!",toMatchEmployee.full_name," is a ",Math.round(sum*100) ,"% matched!");
+                                console.log("More then 60%! Employee name : ",toMatchEmployee.full_name," is a ",Math.round(sum*100) ,"% matched!");
                                                 
                                 for(var i = 0 ; i<companySchema.potential_employee.length&&v ;i++){
                                     // check if matched before
