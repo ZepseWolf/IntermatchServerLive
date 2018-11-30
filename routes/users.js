@@ -213,7 +213,7 @@ router.patch('/feed/:id', (req,res)=>{
     }).then( ()=>{
         if( obj.user_type == "Employee"){
             function updateEmployee(arr,employeeID){
-                console.log("employee update ", arr ,"The id :",employeeID)
+                //console.log("employee update ", arr ,"The id :",employeeID)
                 EmployeeSchema.update({_id:employeeID },{$set :  {
                     potentional_jobs:  arr
                 }},{new:true}).then();
@@ -294,7 +294,7 @@ router.patch('/feed/:id', (req,res)=>{
                             sum = 0;
                         }
                         else if (sum < 0.60 ){                          
-                            console.log('No match > The sum :', sum);
+                            console.log('No match ',jobList._id,' The sum :', sum);
                             sum = 0;
                         }  
                     });
@@ -327,7 +327,7 @@ router.patch('/feed/:id', (req,res)=>{
                         }
                          var code  = eval(companyCode.slice(0, -1));
                          
-                        console.log("List of c ",c);
+                        
                         Promise.all([updateEmployee(c,listArr[0]._id),code])
                         .then(() =>{
                             res.send(listArr);
@@ -421,12 +421,12 @@ router.patch('/feed/:id', (req,res)=>{
                                     // check if matched before
                                     if(jobList._id == companySchema.potential_employee[i].job_id && companySchema.potential_employee[i].employee_id == toMatchEmployee._id){
                                         v = false;
-                                        console.log("No excute");
+                                       
                                     }
                                     
                                 }
                                 if (v){
-                                    console.log("Yes excute");
+                                   
                                     listArr.push({
                                         job_id: jobList._id,
                                         company_id: jobList.company_id,
@@ -442,7 +442,7 @@ router.patch('/feed/:id', (req,res)=>{
                             }  
                             
                             });
-                            console.log(jobListByCompany.length," should be 2", loopCount)
+                            
                             if((jobListByCompany.length == loopCount)&&(listArr === undefined || listArr.length == 0 )){
                                 // add array together when no list Arr
                                 var employeeID = [];
@@ -453,7 +453,9 @@ router.patch('/feed/:id', (req,res)=>{
                                 }
                                 console.log(employeeID);
                                 EmployeeSchema.find({$or: employeeID}).then((data)=>{
-                                    console.log("The old data :",data);           
+                                    for(var i = 0; i<data.length; i++){
+                                        console.log("The matched users:",data[i].full_name);
+                                    }          
                                     res.send(data);
                                 })
                               
@@ -462,7 +464,7 @@ router.patch('/feed/:id', (req,res)=>{
                                 var employeeCode = "";
                                 
                                 for(var i = 0; i<listArr.length;i++){
-                                    console.log(listArr[i].employee_id,listArr[i].job_id);
+                                    //console.log(listArr[i].employee_id,listArr[i].job_id);
                                     c =c.concat({
                                         matched_date: Date.now(),
                                         employee_id: listArr[i].employee_id,    
@@ -471,7 +473,7 @@ router.patch('/feed/:id', (req,res)=>{
                                     employeeCode =  employeeCode.concat(`updateEmployee(listArr[${i}].job_id,listArr[${i}].company_id,listArr[${i}].employee_id),`);
                                 }
                                 
-                                console.log(employeeCode);
+                                
                                  var code  = eval(employeeCode.slice(0, -1));
                                  
 
@@ -485,7 +487,9 @@ router.patch('/feed/:id', (req,res)=>{
                                         })
                                     }
                                     EmployeeSchema.find({$or: employeeID}).then((data)=>{
-                                        console.log("The New data :",data);
+                                        for(var i = 0; i<data.length; i++){
+                                            console.log("The matched users:",data[i].full_name);
+                                        }
                                         res.send(data);
                                     })
                                 });
