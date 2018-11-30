@@ -279,7 +279,7 @@ router.patch('/feed/:id', (req,res)=>{
                         }
                         if (sum >0.60 ){
                             jobArr.push(jobList);
-                            console.log("More then 60%!",jobList.title," is a ",Math.round(sum*100) ,"% matched!");                
+                            console.log("More then 60%! The job title :",jobList.title," is a ",Math.round(sum*100) ,"% matched!");                
                             for(var i = 0 ; i<employeeData.potentional_jobs.length;i++){
                                 if(employeeData.potentional_jobs[i].job_id == jobList._id && employeeData.potentional_jobs[i].company_id ==jobList.company_id){
                                     v = false;
