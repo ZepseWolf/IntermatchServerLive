@@ -9,7 +9,12 @@ var usersRouter = require('./routes/users');
 
 //app is an express app
 var app = express();
-
+var cors = require('cors');
+app.use(cors({
+  //origin is the domain that you want to allow
+  origin:['http://localhost:4200','http://127.0.0.1:4200'],
+  credentials: true
+}));
 var mongoose =require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://admin1234:meow1234@ds046677.mlab.com:46677/intermatch',{useNewUrlParser: true});
