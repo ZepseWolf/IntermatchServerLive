@@ -525,8 +525,8 @@ router.get('/jobposting/:id',(req,res)=>{
         res.send(data);
     });
 });
-
 router.get('/getJobpostingById/:id',(req,res)=>{
+    console.log("The id is :" + req.params.id);
     JobSchema.findById({_id:req.params.id}).then((data,err)=>{
         if(err)
         res.status(404).send(err);
