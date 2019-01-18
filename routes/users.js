@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const  _ = require('lodash');
+const fs = require('fs');
 var UserSchema = require('../models/userSchema');
 const {EmployeeSchema} = require('../models/employeeSchema.js');// testing
 const {CompanySchema} = require('../models/companySchema.js');
