@@ -25,11 +25,34 @@ router.get('/', function(req, res, next) {
  res.send('respond with a resource');
 });
 router.post('/addDiscovery', (req,res)=>{
-
+    //Adding file into datas.json then pushing into watson
+fs.writeFile( 'datas.json',req.body,'utf8',
+function(error, data){
+    if(error){
+       console.log("Error is ",error)
+    }
+    else{
+        var files = fs.readFileSync('datas.json');
+        discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
+                                collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
+                                file: files,
+                                metadata: undefined,
+                                file_content_type: 'application/json',
+                                filename: 'Filess1' 
+        },function(error, data){
+            if(error){
+              console.log("Error is ",error)
+            }
+            else{
+              console.log(JSON.stringify(data, null, 2));
+            }
+        });
+    }
+  });
 });
 router.get('/useReport', (req,res)=>{
     res.send({
-        "text" : "Former presidential candidate Tan Cheng Bock said in a Facebook post on Friday (Jan 18) that he has filed an application to form a new political party called the Progress Singapore Party. The party comprises 12 Singaporeans, including some ex-cadres from the ruling People's Action Party (PAP). Announcing his return to politics after a long absence, he said that he filed the application to the Registry of Societies for the new political party on Jan 16 and is currently awaiting their approval."
+        "text" : "xxx Former presidential candidate Tan Cheng Bock said in a Facebook post on Friday (Jan 18) that he has filed an application to form a new political party called the Progress Singapore Party. The party comprises 12 Singaporeans, including some ex-cadres from the ruling People's Action Party (PAP). Announcing his return to politics after a long absence, he said that he filed the application to the Registry of Societies for the new political party on Jan 16 and is currently awaiting their approval."
     });
 });
 router.post('/register', (req,res)=>{
