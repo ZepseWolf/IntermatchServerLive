@@ -7,7 +7,13 @@ const {CompanySchema} = require('../models/companySchema.js');
 const {JobSchema} = require('../models/jobSchema.js');
 var passport = require('passport');
 const {ObjectID}  = require('mongodb');
+var DiscoveryV1 = require('watson-developer-cloud/discovery/v1');
 const PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights/v3');
+var discovery = new DiscoveryV1({
+    version: '2018-12-03',
+    iam_apikey: '1ImX0abYJPqlYzm56WzIr7O0Hd8UmAjPMV96GRuhuo9s', 
+    url: 'https://gateway-wdc.watsonplatform.net/discovery/api'
+});
 var personalityInsights = new PersonalityInsightsV3({
     version: '2017-10-13',
     username: 'e017ffe0-0eec-40b1-9cbc-5f22de364688',
@@ -17,6 +23,14 @@ var personalityInsights = new PersonalityInsightsV3({
 /* GET users listing. */
 router.get('/', function(req, res, next) {
  res.send('respond with a resource');
+});
+router.post('/addDiscovery', (req,res)=>{
+
+});
+router.get('/useReport', (req,res)=>{
+    res.send({
+        "text" : "Former presidential candidate Tan Cheng Bock said in a Facebook post on Friday (Jan 18) that he has filed an application to form a new political party called the Progress Singapore Party. The party comprises 12 Singaporeans, including some ex-cadres from the ruling People's Action Party (PAP). Announcing his return to politics after a long absence, he said that he filed the application to the Registry of Societies for the new political party on Jan 16 and is currently awaiting their approval."
+    });
 });
 router.post('/register', (req,res)=>{
   var newID = ObjectID.createPk();
@@ -185,10 +199,7 @@ router.patch('/updateProfile/:id/:type',(req,res)=>{
     if(!ObjectID.isValid(id)){
         return res.status(404).send();
     }
-       
-      
-       
-       
+
          //console.log(updatedData);
        });
 });
@@ -286,12 +297,6 @@ router.patch('/feed/:id', (req,res)=>{
                                 }
                             }
                             if (v){
-                                // listArr.push({
-                                //     job_id: jobList._id,
-                                //     company_id: jobList.company_id,
-                                //     employee_id: employeeData._id,
-                                // });
-                                
                                 listArr.push(jobList);
                             }
                             sum = 0;
@@ -525,8 +530,8 @@ router.get('/jobposting/:id',(req,res)=>{
         res.send(data);
     });
 });
+
 router.get('/getJobpostingById/:id',(req,res)=>{
-    console.log("The id is :" + req.params.id);
     JobSchema.findById({_id:req.params.id}).then((data,err)=>{
         if(err)
         res.status(404).send(err);
