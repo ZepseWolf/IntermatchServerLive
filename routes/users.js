@@ -13,7 +13,7 @@ const PersonalityInsightsV3 = require('watson-developer-cloud/personality-insigh
 var discovery = new DiscoveryV1({
     version: '2018-12-03',
     iam_apikey: '1ImX0abYJPqlYzm56WzIr7O0Hd8UmAjPMV96GRuhuo9s', 
-    url: 'https://gateway-wdc.watsonplatform.net/discovery/api'
+    url: 'https://gateway-syd.watsonplatform.net/discovery/api'
 });
 var personalityInsights = new PersonalityInsightsV3({
     version: '2017-10-13',
@@ -53,7 +53,7 @@ function(error, data){
 });
 router.get('/useReport', (req,res)=>{
     res.send({
-        "text" : "xxx Former presidential candidate Tan Cheng Bock said in a Facebook post on Friday (Jan 18) that he has filed an application to form a new political party called the Progress Singapore Party. The party comprises 12 Singaporeans, including some ex-cadres from the ruling People's Action Party (PAP). Announcing his return to politics after a long absence, he said that he filed the application to the Registry of Societies for the new political party on Jan 16 and is currently awaiting their approval."
+        "text" : "candidate Tan Cheng Bock said in a Facebook post on Friday (Jan 18) that he has filed an application to form a new political party called the Progress Singapore Party. The party comprises 12 Singaporeans, including some ex-cadres from the ruling People's Action Party (PAP). Announcing his return to politics after a long absence, he said that he filed the application to the Registry of Societies for the new political party on Jan 16 and is currently awaiting their approval."
     });
 });
 router.post('/register', (req,res)=>{
