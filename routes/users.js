@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const  _ = require('lodash');
 const fs = require('fs');
+const jsonfile = require('jsonfile')
 var UserSchema = require('../models/userSchema');
 const {EmployeeSchema} = require('../models/employeeSchema.js');// testing
 const {CompanySchema} = require('../models/companySchema.js');
@@ -34,18 +35,21 @@ function(error, data){
     }
     else{
         var files = fs.readFileSync('datas.json');
+        
         discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
                                 collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
                                 file: files,
                                 metadata: undefined,
                                 file_content_type: 'application/json',
-                                filename: 'Filess1' 
+                                filename: '1 more' 
         },function(error, data){
             if(error){
               console.log("Error is ",error)
+              res.status(404).send(e);
             }
             else{
               console.log(JSON.stringify(data, null, 2));
+              res.send("Hey it work");
             }
         });
     }
