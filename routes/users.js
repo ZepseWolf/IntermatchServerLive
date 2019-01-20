@@ -35,6 +35,7 @@ router.post('/addDiscovery', (req,res)=>{
 //     }
 //     else{
     var files = req.pipe(request.get('https://agile-bayou-24340.herokuapp.com/users/useReport'));
+    console.log("Type is "+ typeof(files));
         //var files = fs.readFileSync('datas.json');
         
         discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
