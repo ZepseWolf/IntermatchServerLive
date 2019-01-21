@@ -6,7 +6,7 @@ var TmpData = mongoose.model('TmpData',{// the text here are use to target speci
         type: String,
         required:true
     },
-    fileName: string,
+    fileName: String,
     date_created: {
         type: Number,
         default:Date.now()

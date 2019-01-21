@@ -6,7 +6,7 @@ var DocumentSchema = mongoose.model('DocumentSchema',{// the text here are use t
         type: String,
         required:true
     },
-    fileName: string,
+    fileName: String,
     date_created: {
         type: Number,
         default:Date.now()
