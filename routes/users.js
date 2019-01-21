@@ -32,8 +32,16 @@ router.get('/newDatas', function(req, res) {
         if (e)
         res.error("Failed");
         else{
+            if(data && now.date() - data.date_created > hour23){
+                //check time #true to proceeding adding everything
+                TmpData.collection.remove();
+                res.send(true);
+            }
+            else{
+                res.send(false);
+            }
             console.log(JSON.stringify(data, null, 2));
-            res.send(data);
+            res.send(data.date_created);
         }
        
     });
