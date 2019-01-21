@@ -38,7 +38,10 @@ router.post('/addDiscovery', (req,res)=>{
 //     else{
         var url ="https://agile-bayou-24340.herokuapp.com/users/useReport";
         request(url , function(error,respond,html){
-            buf = Buffer.from(respond.body);
+            var json = {
+                "text": "Today is the day where i will, be god."
+              };
+            buf = Buffer.from(json);
             discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
                                 collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
                                 file: buf,
