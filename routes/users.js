@@ -28,15 +28,14 @@ router.get('/', function(req, res, next) {
 });
 router.post('/addDiscovery', (req,res)=>{
     //Adding file into datas.json then pushing into watson
-// fs.writeFile( 'datas.json',req.body,'utf8',
-// function(error, data){
-//     if(error){
-//        console.log("Error is ",error)
-//     }
-//     else{
-    var files = req.pipe(request.get('https://agile-bayou-24340.herokuapp.com/users/useReport'));
-    console.log("Type is "+ typeof(files));
-        //var files = fs.readFileSync('datas.json');
+fs.writeFile( 'tmp/temp.json',req.body,'utf8',
+function(error, data){
+    if(error){
+       console.log("Error is ",error)
+    }
+    else{
+    //var files = req.pipe(request.get('https://agile-bayou-24340.herokuapp.com/users/useReport'));
+        var files = fs.readFileSync('tmp/temp.json');
         
         discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
                                 collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
@@ -54,8 +53,8 @@ router.post('/addDiscovery', (req,res)=>{
               res.send("Hey it work");
             }
         });
-//     }
-//   });
+    }
+  });
 });
 router.get('/useReport', (req,res)=>{
     res.send({
