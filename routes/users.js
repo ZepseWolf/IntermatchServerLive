@@ -43,7 +43,7 @@ router.post('/addDiscovery', (req,res)=>{
                                 collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
                                 file: buf,
                                 metadata: undefined,
-                                file_content_type: undefined,
+                                file_content_type: "application/json",
                                 filename: '1 more' 
             },function(error, data){
                 if(error){
