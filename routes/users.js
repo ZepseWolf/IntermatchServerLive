@@ -25,38 +25,25 @@ router.get('/', function(req, res, next) {
  res.send('respond with a resource');
 });
 router.post('/addDiscovery', (req,res)=>{
-    var buf ; 
     //Adding file into datas.json then pushing into watson
-// fs.writeFile( '../tmp/temp.json',req.body,'utf8',
-// function(error, data){
-//     if(error){
-//        console.log("Error is ",error)
-//     }
-//     else{
-        var url ="https://agile-bayo.herokuapp.com/users/useReport";
-            buf = Buffer.from(JSON.stringify(req.body));
-            discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
-                                collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
-                                file: buf,
-                                metadata: undefined,
-                                file_content_type: "application/json",
-                                filename: '1 more' 
-            },function(error, data){
-                if(error){
-                console.log("Error is ",error)
-                res.status(404).send(e);
-                }
-                else{
-                console.log(JSON.stringify(data, null, 2));
-                res.send("Hey it work");
-                }
-            });
-    //var files = req.pipe(request.get('https://agile-bayou-24340.herokuapp.com/users/useReport'));
-    //var files = fs.readFileSync('../tmp/temp.json');
-        
-        
-//     }
-//   });
+var fileName = req.body.fileName;
+var  buf = Buffer.from(JSON.stringify({text: req.body.text}));
+discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
+                        collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
+                        file: buf,
+                        metadata: undefined,
+                        file_content_type: "application/json",
+                        filename: fileName 
+    },function(error, data){
+        if(error){
+        console.log("Error is ",error)
+        res.status(404).send(e);
+        }
+        else{
+        console.log(JSON.stringify(data, null, 2));
+        res.send("Hey it work");
+        }
+    });
 });
 router.get('/useReport', (req,res)=>{
     res.send({
