@@ -1,9 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const request = require('request');
 const  _ = require('lodash');
-const fs = require('fs');
-const jsonfile = require('jsonfile')
 var UserSchema = require('../models/userSchema');
 const {EmployeeSchema} = require('../models/employeeSchema.js');// testing
 const {CompanySchema} = require('../models/companySchema.js');
@@ -36,12 +33,8 @@ router.post('/addDiscovery', (req,res)=>{
 //        console.log("Error is ",error)
 //     }
 //     else{
-        var url ="https://agile-bayou-24340.herokuapp.com/users/useReport";
-        request(url , function(error,respond,html){
-            var json = {
-                "text": "Today is the day where i will, be god."
-              };
-            buf = Buffer.from(JSON.stringify(json));
+        var url ="https://agile-bayo.herokuapp.com/users/useReport";
+            buf = Buffer.from(JSON.stringify(req.body));
             discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
                                 collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
                                 file: buf,
@@ -58,7 +51,6 @@ router.post('/addDiscovery', (req,res)=>{
                 res.send("Hey it work");
                 }
             });
-        });
     //var files = req.pipe(request.get('https://agile-bayou-24340.herokuapp.com/users/useReport'));
     //var files = fs.readFileSync('../tmp/temp.json');
         
