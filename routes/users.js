@@ -50,6 +50,7 @@ router.get('/newDatas', function(req, res) {
 });
 router.post('/addDiscovery', (req,res)=>{
     //Adding file into datas.json then pushing into watson
+    console.log(JSON.stringify(req.body, null, 2));
 var text = req.body.text
 var fileName = req.body.fileName;
 var  buf = Buffer.from(JSON.stringify({text: text}));
