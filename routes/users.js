@@ -37,9 +37,11 @@ router.get('/newDatas', function(req, res) {
                 TmpData.collection.remove();
                 res.send(true);
             }
-            else{
-                res.send(false);
+            else if(!data){
+                res.send(true);
             }
+            else
+            res.send(false);
             //console.log(JSON.stringify(data, null, 2));
             //res.send(data.date_created);
         }
