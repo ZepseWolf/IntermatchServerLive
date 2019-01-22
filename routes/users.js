@@ -50,9 +50,9 @@ router.get('/newDatas', function(req, res) {
 });
 router.post('/addDiscovery', (req,res)=>{
     //Adding file into datas.json then pushing into watson
-
+var text = req.body.text
 var fileName = req.body.fileName;
-var  buf = Buffer.from(JSON.stringify({text: req.body.text}));
+var  buf = Buffer.from(JSON.stringify({text: text}));
 
 discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
                         collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
@@ -69,13 +69,15 @@ discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec',
             var newID = data.document_id
             var doc = new DocumentSchema({
                 _id: newID,
-                fileName : fileName
+                fileName : fileName,
+                text: text
             });
             doc.save().then((SpecificData)=>{});
 
             var temp = new TmpData({
                 _id: newID,
-                fileName : fileName
+                fileName : fileName,
+                text: text
             });
             temp.save().then((SpecificData)=>{});
 
