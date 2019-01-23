@@ -11,7 +11,11 @@ var passport = require('passport');
 const {ObjectID}  = require('mongodb');
 var DiscoveryV1 = require('watson-developer-cloud/discovery/v1');
 const PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights/v3');
-
+var discovery = new DiscoveryV1({
+    version: '2018-12-03',
+    iam_apikey: '1ImX0abYJPqlYzm56WzIr7O0Hd8UmAjPMV96GRuhuo9s', 
+    url: 'https://gateway-syd.watsonplatform.net/discovery/api'
+});
 // var personalityInsights = new PersonalityInsightsV3({
 //     version: '2017-10-13',
 //     username: 'e017ffe0-0eec-40b1-9cbc-5f22de364688',
@@ -44,13 +48,17 @@ router.get('/newDatas', function(req, res) {
        
     });
 });
+router.get('/getCategory', (req,res)=>{
+    TmpData.find().then((data , e )=>{
+        if (e)
+        console.log("Error is : ",e)
+        else
+        console.log("Data is  : ", data)
+    })
+});
 router.post('/addDiscovery', (req,res)=>{
     //Adding file into datas.json then pushing into watson
-    var discovery = new DiscoveryV1({
-        version: '2018-12-03',
-        iam_apikey: '1ImX0abYJPqlYzm56WzIr7O0Hd8UmAjPMV96GRuhuo9s', 
-        url: 'https://gateway-syd.watsonplatform.net/discovery/api'
-    });
+    
     console.log(JSON.stringify(req.body, null, 2));
     
 var text = req.body.text.replace(/\?meow\?/g, '"');
