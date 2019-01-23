@@ -49,12 +49,21 @@ router.get('/newDatas', function(req, res) {
     });
 });
 router.get('/getCategory', (req,res)=>{
-    TmpData.find().then((data , e )=>{
-        if (e)
-        console.log("Error is : ",e)
-        else
-        console.log("Data is  : ", data)
+    discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`}).then((data,e)=>{
+        res.send(data);
     })
+    // TmpData.find().then((data , e )=>{
+    //     if (e)
+    //     console.log("Error is : ",e)
+    //     else
+    //     {
+    //         for(var i = 0 ; i< data.lenght; i++){
+                
+    //             discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`}).then((data))
+    //         }
+    //     }
+        
+    // })
 });
 router.post('/addDiscovery', (req,res)=>{
     //Adding file into datas.json then pushing into watson
@@ -96,6 +105,8 @@ discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec',
             console.log(JSON.stringify(data, null, 2));
             res.send("Hey it work");
         }
+    }).then(()=>{
+        
     });
 });
 // router.get('/useReport', (req,res)=>{
