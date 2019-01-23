@@ -8,6 +8,7 @@ var DocumentSchema = mongoose.model('DocumentSchema',{// the text here are use t
     },
     fileName: String,
     text: String,
+    category:String,
     date_created: {
         type: Number,
         default:Date.now()
