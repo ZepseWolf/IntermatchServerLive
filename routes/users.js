@@ -11,17 +11,13 @@ var passport = require('passport');
 const {ObjectID}  = require('mongodb');
 var DiscoveryV1 = require('watson-developer-cloud/discovery/v1');
 const PersonalityInsightsV3 = require('watson-developer-cloud/personality-insights/v3');
-var discovery = new DiscoveryV1({
-    version: '2018-12-03',
-    iam_apikey: '1ImX0abYJPqlYzm56WzIr7O0Hd8UmAjPMV96GRuhuo9s', 
-    url: 'https://gateway-syd.watsonplatform.net/discovery/api'
-});
-var personalityInsights = new PersonalityInsightsV3({
-    version: '2017-10-13',
-    username: 'e017ffe0-0eec-40b1-9cbc-5f22de364688',
-    password: 'vGT2DJsQA3Op',
-    url: 'https://gateway.watsonplatform.net/personality-insights/api'
-});
+
+// var personalityInsights = new PersonalityInsightsV3({
+//     version: '2017-10-13',
+//     username: 'e017ffe0-0eec-40b1-9cbc-5f22de364688',
+//     password: 'vGT2DJsQA3Op',
+//     url: 'https://gateway.watsonplatform.net/personality-insights/api'
+// });
 /* GET users listing. */
 router.get('/', function(req, res, next) {
  res.send('respond with a resource');
@@ -50,44 +46,49 @@ router.get('/newDatas', function(req, res) {
 });
 router.post('/addDiscovery', (req,res)=>{
     //Adding file into datas.json then pushing into watson
+    var discovery = new DiscoveryV1({
+        version: '2018-12-03',
+        iam_apikey: '1ImX0abYJPqlYzm56WzIr7O0Hd8UmAjPMV96GRuhuo9s', 
+        url: 'https://gateway-syd.watsonplatform.net/discovery/api'
+    });
     console.log(JSON.stringify(req.body, null, 2));
     
-var text = req.body.text.replace(/\?meow\?/g, '"');;
+var text = req.body.text.replace(/\?meow\?/g, '"');
 var fileName = req.body.fileName;
 var  buf = Buffer.from(JSON.stringify({text: text}));
 
 res.send(req.body);
-discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
-                        collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
-                        file: buf,
-                        metadata: undefined,
-                        file_content_type: "application/json",
-                        filename: fileName 
-    },function(error, data){
-        if(error){
-            console.log("Error is ",error)
-            res.status(404).send(e);
-        }
-        else{
-            var newID = data.document_id
-            var doc = new DocumentSchema({
-                _id: newID,
-                fileName : fileName,
-                text: text
-            });
-            doc.save().then((SpecificData)=>{});
+// discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
+//                         collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
+//                         file: buf,
+//                         metadata: undefined,
+//                         file_content_type: "application/json",
+//                         filename: fileName 
+//     },function(error, data){
+//         if(error){
+//             console.log("Error is ",error)
+//             res.status(404).send(e);
+//         }
+//         else{
+//             var newID = data.document_id
+//             var doc = new DocumentSchema({
+//                 _id: newID,
+//                 fileName : fileName,
+//                 text: text
+//             });
+//             doc.save().then((SpecificData)=>{});
 
-            var temp = new TmpData({
-                _id: newID,
-                fileName : fileName,
-                text: text
-            });
-            temp.save().then((SpecificData)=>{});
+//             var temp = new TmpData({
+//                 _id: newID,
+//                 fileName : fileName,
+//                 text: text
+//             });
+//             temp.save().then((SpecificData)=>{});
 
-            console.log(JSON.stringify(data, null, 2));
-            res.send("Hey it work");
-        }
-    });
+//             console.log(JSON.stringify(data, null, 2));
+//             res.send("Hey it work");
+//         }
+//     });
 });
 // router.get('/useReport', (req,res)=>{
 //     var json = {
