@@ -53,7 +53,17 @@ router.get('/getCategory', (req,res)=>{
         if (e)
         res.send(e);
         else
-        res.send(data);
+        {
+            for(var x =0 ; x < data.matching_results;x++){
+                CompanySchema.findOneAndUpdate({
+                    _id : data.results[x].id
+                },{$set: {}},{upsert:true}).then(data =>{
+                    // set data
+                });
+                data.results[x].enriched_text.categories[0].label.replace("/", "");
+            }
+        }
+        res.send(data.results.enriched_text);
     });
     // TmpData.find().then((data , e )=>{
     //     if (e)
