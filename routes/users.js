@@ -125,7 +125,11 @@ discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec',
 router.get('/useReport', (req,res)=>{
     CompanySchema.findOneAndUpdate({
         _id : "083e23b5-ac0b-46bc-8c94-9179c68be176"
-    },{$set: {"category":2}},{upsert:true}).then(data =>{
+    },{$set: {category: "meow "}},{upsert:true,new:true}).then((data,err) =>{
+        if (err)
+        res.send(err);
+
+        else res.send(data);
         // set data
     });
 //     var json = {
