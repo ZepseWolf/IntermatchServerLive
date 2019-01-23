@@ -55,12 +55,16 @@ router.get('/getCategory', (req,res)=>{
         else
         {
             for(var x =0 ; x < data.matching_results;x++){
-                CompanySchema.findOneAndUpdate({
+                DocumentSchema.findOneAndUpdate({
                     _id : data.results[x].id
-                },{$set: {"type":2}},{upsert:true}).then(data =>{
+                },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
+                {upsert:true,new:true}).then((data,err) =>{
+                    if (err)
+                    console.log(err);
+            
+                    else console.log(data);
                     // set data
                 });
-                data.results[x].enriched_text.categories[0].label.replace("/", "");
             }
         }
         res.send(data.results.enriched_text);
