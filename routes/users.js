@@ -54,7 +54,7 @@ router.post('/addDiscovery', (req,res)=>{
 var text = req.body.text;
 var fileName = req.body.fileName;
 var  buf = Buffer.from(JSON.stringify({text: text}));
-
+res.send(req.body);
 // discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec', 
 //                         collection_id: '1333c32c-999a-4b64-b3a2-67210f3b4c20', 
 //                         file: buf,
