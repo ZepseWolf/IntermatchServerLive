@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const  _ = require('lodash');
+var timeout = require('connect-timeout');
 var UserSchema = require('../models/userSchema');
 const {EmployeeSchema} = require('../models/employeeSchema.js');
 const {CompanySchema} = require('../models/companySchema.js');
@@ -81,7 +82,8 @@ router.get('/newDatas', function(req, res) {
        
     });
 });
-router.get('/getCategory', (req,res)=>{
+router.get('/getCategory',timeout('360s'), (req,res)=>{
+    console.log("Meowss");
     TmpData.find().then((tmpdb , e )=>{
         if (e)
         console.log("Error od mongodb is : ",e)
@@ -127,7 +129,7 @@ router.get('/getCategory', (req,res)=>{
                         if (err)
                         console.log(err);
                 
-                       
+                        else console.log(data);
                         // set data
                     });    
                             

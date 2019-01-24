@@ -1,6 +1,5 @@
 var createError = require('http-errors');
 var express = require('express');
-var timeout = require('connect-timeout')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -10,7 +9,6 @@ var usersRouter = require('./routes/users');
 
 //app is an express app
 var app = express();
-app.use(timeout('100s'))
 var mongoose =require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://admin1234:meow1234@ds046677.mlab.com:46677/intermatch',{useNewUrlParser: true});
