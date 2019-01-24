@@ -26,6 +26,38 @@ var discovery = new DiscoveryV1({
 router.get('/', function(req, res, next) {
  res.send('respond with a resource');
 });
+router.get("/getTodayData", function(req, res) {
+    var json = {};
+    var uniqueArr=[];
+    TmpData.find().then((data ,e)=>{
+        if (e)
+        res.error("Failed to call database");
+        else{
+            for( var i =0 ; i<data.length;i++){
+                //eg . news/law > law
+                var lastCategory = data[i].category.slice(data[i].category.lastIndexOf("/")+1);
+                if(!uniqueArr.includes(lastCategory)){
+                    json[lastCategory]= [];
+                    json[lastCategory].push({
+                        id: data[i]._id,
+                        title: data[i].fileName,
+				        description : data[i].text
+                    })
+                    uniqueArr.push(lastCategory);
+                }
+                else{
+                    json[lastCategory].push({
+                        id: data[i]._id,
+                        title: data[i].fileName,
+				        description : data[i].text
+                    })
+                }
+            }
+            res.send(json)
+
+        }
+    });
+});
 router.get('/newDatas', function(req, res) {
     var hour23 = 82800000;
     TmpData.findOne().then((data ,e)=>{
@@ -77,19 +109,28 @@ router.get('/getCategory', (req,res)=>{
                     //         })
                     //     ));
                     // }
-                    
-                        for(var x =0 ; x < data.results.length;x++){
-                            DocumentSchema.findOneAndUpdate({
-                                _id : data.results[x].id
-                            },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
-                            {upsert:true,new:true}).then((data,err) =>{
-                                if (err)
-                                console.log(err);
+                    DocumentSchema.findOneAndUpdate({
+                        _id : data.results[x].id
+                    },{$set: {category: data.results[x].enriched_text.categories[0].label}},
+                    {upsert:true,new:true}).then((data,err) =>{
+                        if (err)
+                        console.log(err);
+                
+                        else console.log(data);
+                        // set data
+                    });
+                    TmpData.findOneAndUpdate({
+                        _id : data.results[x].id
+                    },{$set: {category: data.results[x].enriched_text.categories[0].label}},
+                    {upsert:true,new:true}).then((data,err) =>{
+                        if (err)
+                        console.log(err);
+                
+                        else console.log(data);
+                        // set data
+                    });    
+                            
                         
-                                else console.log(data);
-                                // set data
-                            });
-                        }
                 
                        // res.send(data.results[0].enriched_text.categories);
                     }
@@ -98,41 +139,6 @@ router.get('/getCategory', (req,res)=>{
         }
         
     });
-    // discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`,filter:"_id:992d725c-e547-420e-8b5d-ef376dedfe54"},function(e,data){
-    //     if (e)
-    //     res.send(e);
-    //     else{
-        //    for (let i = 0, p = Promise.resolve(); i < data.matching.results; i++) {
-        //     p = p.then(_ => new Promise(resolve =>
-        //         DocumentSchema.findOneAndUpdate({
-        //             _id : data.results[x].id
-        //         },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
-        //         {upsert:true,new:true}).then((data,err) =>{
-        //             if (err)
-        //             console.log(err);
-            
-        //             else console.log(data);
-        //             // set data
-        //         })
-        //     ));
-        // }
-        // res.send(data);
-            // for(var x =0 ; x < data.results.length;x++){
-            //     DocumentSchema.findOneAndUpdate({
-            //         _id : data.results[x].id
-            //     },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
-            //     {upsert:true,new:true}).then((data,err) =>{
-            //         if (err)
-            //         console.log(err);
-            
-            //         else console.log(data);
-            //         // set data
-            //     });
-            // }
-           // res.send(data.results[0].enriched_text.categories);
-        // }
-        
-    // });
     
 });
 router.post('/addDiscovery', (req,res)=>{
