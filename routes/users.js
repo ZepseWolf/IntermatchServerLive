@@ -67,18 +67,19 @@ router.get('/getCategory', (req,res)=>{
         //         })
         //     ));
         // }
-            for(var x =0 ; x < data.results.length;x++){
-                DocumentSchema.findOneAndUpdate({
-                    _id : data.results[x].id
-                },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
-                {upsert:true,new:true}).then((data,err) =>{
-                    if (err)
-                    console.log(err);
+        res.send(data);
+            // for(var x =0 ; x < data.results.length;x++){
+            //     DocumentSchema.findOneAndUpdate({
+            //         _id : data.results[x].id
+            //     },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
+            //     {upsert:true,new:true}).then((data,err) =>{
+            //         if (err)
+            //         console.log(err);
             
-                    else console.log(data);
-                    // set data
-                });
-            }
+            //         else console.log(data);
+            //         // set data
+            //     });
+            // }
            // res.send(data.results[0].enriched_text.categories);
         }
         
