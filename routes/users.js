@@ -71,7 +71,7 @@ router.get('/getCategory', (req,res)=>{
                         
                                 else {
                                     console.log(data);
-                                    resolve();
+                                    resolve();  
                                 }
                                 // set data
                             })
