@@ -90,7 +90,7 @@ router.get('/getCategory', (req,res)=>{
                                 // set data
                             });
                         }
-                        res.send("Doneeee");
+                
                        // res.send(data.results[0].enriched_text.categories);
                     }
                 })
