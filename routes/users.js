@@ -33,6 +33,7 @@ router.get("/getTodayData", function(req, res) {
         if (e)
         res.error("Failed to call database");
         else{
+            console.log(data);
             for( var i =0 ; i<data.length;i++){
                 //eg . news/law > law
                 var lastCategory = data[i].category.slice(data[i].category.lastIndexOf("/")+1);
@@ -110,8 +111,8 @@ router.get('/getCategory', (req,res)=>{
                     //     ));
                     // }
                     DocumentSchema.findOneAndUpdate({
-                        _id : data.results[x].id
-                    },{$set: {category: data.results[x].enriched_text.categories[0].label}},
+                        _id : data.results.id
+                    },{$set: {category: data.results.enriched_text.categories[0].label}},
                     {upsert:true,new:true}).then((data,err) =>{
                         if (err)
                         console.log(err);
@@ -120,8 +121,8 @@ router.get('/getCategory', (req,res)=>{
                         // set data
                     });
                     TmpData.findOneAndUpdate({
-                        _id : data.results[x].id
-                    },{$set: {category: data.results[x].enriched_text.categories[0].label}},
+                        _id : data.results.id
+                    },{$set: {category: data.results.enriched_text.categories[0].label}},
                     {upsert:true,new:true}).then((data,err) =>{
                         if (err)
                         console.log(err);
