@@ -49,6 +49,54 @@ router.get('/newDatas', function(req, res) {
     });
 });
 router.get('/getCategory', (req,res)=>{
+    TmpData.find().then((tmpdb , e )=>{
+        if (e)
+        console.log("Error od mongodb is : ",e)
+        else
+        {
+            for(var c = 0 ; c< tmpdb.length; c++){
+                
+                discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`,filter:`_id:${tmpdb[c]._id}`},function(e,data){
+                    if (e)
+                    res.send(e);
+                    else{
+                       for (let i = 0, p = Promise.resolve(); i < data.matching.results; i++) {
+                        p = p.then(_ => new Promise(resolve =>
+                            DocumentSchema.findOneAndUpdate({
+                                _id : data.results[x].id
+                            },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
+                            {upsert:true,new:true}).then((data,err) =>{
+                                if (err)
+                                console.log(err);
+                        
+                                else {
+                                    console.log(data);
+                                    resolve();
+                                }
+                                // set data
+                            })
+                        ));
+                    }
+                    res.send("Doneeee");
+                        // for(var x =0 ; x < data.results.length;x++){
+                        //     DocumentSchema.findOneAndUpdate({
+                        //         _id : data.results[x].id
+                        //     },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
+                        //     {upsert:true,new:true}).then((data,err) =>{
+                        //         if (err)
+                        //         console.log(err);
+                        
+                        //         else console.log(data);
+                        //         // set data
+                        //     });
+                        // }
+                       // res.send(data.results[0].enriched_text.categories);
+                    }
+                })
+            }
+        }
+        
+    })
     discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`,filter:"_id:992d725c-e547-420e-8b5d-ef376dedfe54"},function(e,data){
         if (e)
         res.send(e);
@@ -84,18 +132,7 @@ router.get('/getCategory', (req,res)=>{
         }
         
     });
-    // TmpData.find().then((data , e )=>{
-    //     if (e)
-    //     console.log("Error is : ",e)
-    //     else
-    //     {
-    //         for(var i = 0 ; i< data.lenght; i++){
-                
-    //             discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`}).then((data))
-    //         }
-    //     }
-        
-    // })
+    
 });
 router.post('/addDiscovery', (req,res)=>{
     //Adding file into datas.json then pushing into watson
@@ -580,7 +617,7 @@ router.patch('/feed/:id', (req,res)=>{
                                     })
                                 }
                                 console.log(employeeID);
-                                if(employeeID.lenght < 0 ){
+                                if(employeeID.length < 0 ){
                                     console.log("Empty Matching")
                                     res.send([]);
                                 }else{
