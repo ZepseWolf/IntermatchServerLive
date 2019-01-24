@@ -52,9 +52,22 @@ router.get('/getCategory', (req,res)=>{
     discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`},function(data,e){
         if (e)
         res.send(e);
-        else
-        {
-            for(var x =0 ; x < data.matching_results;x++){
+        else{
+        //    for (let i = 0, p = Promise.resolve(); i < data.matching.results; i++) {
+        //     p = p.then(_ => new Promise(resolve =>
+        //         DocumentSchema.findOneAndUpdate({
+        //             _id : data.results[x].id
+        //         },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
+        //         {upsert:true,new:true}).then((data,err) =>{
+        //             if (err)
+        //             console.log(err);
+            
+        //             else console.log(data);
+        //             // set data
+        //         })
+        //     ));
+        // }
+            for(var x =0 ; x < data.length;x++){
                 DocumentSchema.findOneAndUpdate({
                     _id : data.results[x].id
                 },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
@@ -66,8 +79,9 @@ router.get('/getCategory', (req,res)=>{
                     // set data
                 });
             }
+            
         }
-        res.send(data.results.enriched_text);
+        
     });
     // TmpData.find().then((data , e )=>{
     //     if (e)
