@@ -111,8 +111,8 @@ router.get('/getCategory', (req,res)=>{
                     //     ));
                     // }
                     DocumentSchema.findOneAndUpdate({
-                        _id : data.results.id
-                    },{$set: {category: data.results.enriched_text.categories[0].label}},
+                        _id : data.results[0].id
+                    },{$set: {category: data.results[0].enriched_text.categories[0].label}},
                     {upsert:true,new:true}).then((data,err) =>{
                         if (err)
                         console.log(err);
@@ -121,8 +121,8 @@ router.get('/getCategory', (req,res)=>{
                         // set data
                     });
                     TmpData.findOneAndUpdate({
-                        _id : data.results.id
-                    },{$set: {category: data.results.enriched_text.categories[0].label}},
+                        _id : data.results[0].id
+                    },{$set: {category: data.results[0].enriched_text.categories[0].label}},
                     {upsert:true,new:true}).then((data,err) =>{
                         if (err)
                         console.log(err);
