@@ -60,8 +60,25 @@ router.get('/getCategory', (req,res)=>{
                     if (e)
                     res.send(e);
                     else{
-                       for (let i = 0, p = Promise.resolve(); i < data.matching.results; i++) {
-                        p = p.then(_ => new Promise(resolve =>
+                    //    for (let i = 0, p = Promise.resolve(); i < data.matching.results; i++) {
+                    //     p = p.then(_ => new Promise(resolve =>
+                    //         DocumentSchema.findOneAndUpdate({
+                    //             _id : data.results[x].id
+                    //         },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
+                    //         {upsert:true,new:true}).then((data,err) =>{
+                    //             if (err)
+                    //             console.log(err);
+                        
+                    //             else {
+                    //                 console.log(data);
+                    //                 resolve();  
+                    //             }
+                    //             // set data
+                    //         })
+                    //     ));
+                    // }
+                    
+                        for(var x =0 ; x < data.results.length;x++){
                             DocumentSchema.findOneAndUpdate({
                                 _id : data.results[x].id
                             },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
@@ -69,27 +86,11 @@ router.get('/getCategory', (req,res)=>{
                                 if (err)
                                 console.log(err);
                         
-                                else {
-                                    console.log(data);
-                                    resolve();  
-                                }
+                                else console.log(data);
                                 // set data
-                            })
-                        ));
-                    }
-                    res.send("Doneeee");
-                        // for(var x =0 ; x < data.results.length;x++){
-                        //     DocumentSchema.findOneAndUpdate({
-                        //         _id : data.results[x].id
-                        //     },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
-                        //     {upsert:true,new:true}).then((data,err) =>{
-                        //         if (err)
-                        //         console.log(err);
-                        
-                        //         else console.log(data);
-                        //         // set data
-                        //     });
-                        // }
+                            });
+                        }
+                        res.send("Doneeee");
                        // res.send(data.results[0].enriched_text.categories);
                     }
                 })
