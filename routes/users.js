@@ -82,7 +82,7 @@ router.get('/newDatas', function(req, res) {
        
     });
 });
-router.get('/getCategory',timeout('360s'), (req,res)=>{
+router.get('/getCategory', (req,res)=>{
     console.log("Meowss");
     TmpData.find().then((tmpdb , e )=>{
         if (e)
@@ -135,10 +135,12 @@ router.get('/getCategory',timeout('360s'), (req,res)=>{
                             
                         
                 
-                       // res.send(data.results[0].enriched_text.categories);
+                       // 
                     }
+                   
                 })
             }
+            res.send("donzzes ");
         }
         
     });
