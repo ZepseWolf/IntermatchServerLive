@@ -49,7 +49,7 @@ router.get('/newDatas', function(req, res) {
     });
 });
 router.get('/getCategory', (req,res)=>{
-    discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`},function(data,e){
+    discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`},function(e,data){
         if (e)
         res.send(e);
         else{
