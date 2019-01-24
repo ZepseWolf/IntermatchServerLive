@@ -67,7 +67,7 @@ router.get('/getCategory', (req,res)=>{
         //         })
         //     ));
         // }
-            for(var x =0 ; x < data.length;x++){
+            for(var x =0 ; x < data.results.length;x++){
                 DocumentSchema.findOneAndUpdate({
                     _id : data.results[x].id
                 },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
@@ -79,7 +79,7 @@ router.get('/getCategory', (req,res)=>{
                     // set data
                 });
             }
-            
+           // res.send(data.results[0].enriched_text.categories);
         }
         
     });
