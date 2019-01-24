@@ -89,9 +89,9 @@ router.get('/getCategory', (req,res)=>{
         console.log("Error od mongodb is : ",e)
         else
         {
-            //for(var c = 0 ; c< tmpdb.length; c++){
+            for(var c = 0 ; c< tmpdb.length; c++){
                 
-                discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`,filter:`_id:${tmpdb[0]._id}`},function(e,data){
+                discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`,filter:`_id:${tmpdb[c]._id}`},function(e,data){
                     if (e)
                     console.log(e);
                     else{
@@ -112,16 +112,16 @@ router.get('/getCategory', (req,res)=>{
                     //         })
                     //     ));
                     // }
-                    // DocumentSchema.findOneAndUpdate({
-                    //     _id : data.results[0].id
-                    // },{$set: {category: data.results[0].enriched_text.categories[0].label}},
-                    // {upsert:true,new:true}).then((data,err) =>{
-                    //     if (err)
-                    //     console.log(err);
+                    DocumentSchema.findOneAndUpdate({
+                        _id : data.results[0].id
+                    },{$set: {category: data.results[0].enriched_text.categories[0].label}},
+                    {upsert:true,new:true}).then((data,err) =>{
+                        if (err)
+                        console.log(err);
                 
-                    //     else console.log(data);
-                    //     // set data
-                    // });
+                        else console.log(data);
+                        // set data
+                    });
                     console.log("CATEGORYYYY : ",data.results[0].enriched_text.categories[0].label);
                     TmpData.findOneAndUpdate({
                         _id : data.results[0].id
@@ -140,7 +140,7 @@ router.get('/getCategory', (req,res)=>{
                     }
                    
                 })
-           // }
+           }
             res.send("donzzes ");
         }
         
