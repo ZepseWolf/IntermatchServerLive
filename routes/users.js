@@ -187,8 +187,6 @@ discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec',
             console.log(JSON.stringify(data, null, 2));
             res.send("Hey it work");
         }
-    }).then(()=>{
-        
     });
 });
 router.get('/useReport', (req,res)=>{
