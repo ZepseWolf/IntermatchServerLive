@@ -36,6 +36,26 @@ var naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
 router.get('/', function(req, res, next) {
  res.send('respond with a resource');
 });
+router.post('/emotionText', function(req, res) {
+    var parameters = {
+        'html': '<html><head><title>Fruits</title></head><body><h1>Apples and Oranges</h1><p>I love apples! I don\'t like oranges.</p></body></html>',
+        'features': {
+          'emotion': {
+            'targets': [
+              'apples',
+              'oranges'
+            ]
+          }
+        }
+      };
+      
+      naturalLanguageUnderstanding.analyze(parameters, function(err, response) {
+        if (err)
+          console.log('error:', err);
+        else
+          console.log(JSON.stringify(response, null, 2));
+      });
+});
 router.get("/getTodayData", function(req, res) {
     var json = {};
     var uniqueArr=[];
