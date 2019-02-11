@@ -43,7 +43,7 @@ router.post('/emotionText', function(req, res) {
             'entities': {
             'emotion': true,
             'sentiment': true,
-            'limit': 2
+            'limit': 4
             }
          }
     }
@@ -51,7 +51,7 @@ router.post('/emotionText', function(req, res) {
         if (err)
           console.log('error:', err);
         else
-          console.log(JSON.stringify(response, null, 2));
+          console.log(JSON.stringify(response.emotion, null, 2));
       });
 });
 router.get("/getTodayData", function(req, res) {
