@@ -38,17 +38,15 @@ router.get('/', function(req, res, next) {
 });
 router.post('/emotionText', function(req, res) {
     var parameters = {
-        'html': '<html><head><title>Fruits</title></head><body><h1>Apples and Oranges</h1><p>I love apples! I don\'t like oranges.</p></body></html>',
+        'text': 'IBM is an American multinational technology company headquartered in Armonk, New York, United States, with operations in over 170 countries.',
         'features': {
-          'emotion': {
-            'targets': [
-              'apples',
-              'oranges'
-            ]
-          }
-        }
-      };
-      
+            'entities': {
+            'emotion': true,
+            'sentiment': true,
+            'limit': 2
+            }
+         }
+    }
       naturalLanguageUnderstanding.analyze(parameters, function(err, response) {
         if (err)
           console.log('error:', err);
@@ -112,7 +110,7 @@ router.get('/newDatas', function(req, res) {
     });
 });
 router.get('/getCategory', (req,res)=>{
-    console.log("Meowss");
+    
     TmpData.find().then((tmpdb , e )=>{
         if (e)
         console.log("Error od mongodb is : ",e)
@@ -148,7 +146,7 @@ router.get('/getCategory', (req,res)=>{
                         if (err)
                         console.log(err);
                 
-                        else console.log(data);
+                        
                         // set data
                     });
                     console.log("CATEGORYYYY : ",data.results[0].enriched_text.categories[0].label);
@@ -159,7 +157,7 @@ router.get('/getCategory', (req,res)=>{
                         if (err)
                         console.log(err);
                 
-                        else console.log(data);
+                      
                         // set data
                     });    
                             
