@@ -38,7 +38,7 @@ router.get('/', function(req, res, next) {
 });
 router.post('/emotionText', function(req, res) {
     var parameters = {
-        'text': 'IBM is an American multinational technology company headquartered in Armonk, New York, United States, with operations in over 170 countries.',
+        'text': 'Billy Higgins is now the superman life saver of a 10 year old boy thanks to a romantic twist of fate that compelled him to become a bone marrow donor Four years ago young Rupert Cross was diagnosed with a rare blood disorder that required him to undergo chemotherapy in a specialist unit at Great Ormond Street Hospital for 80 days straight Though the prognosis was dire the boy is now completely healed after Higgins discovered he was a match for Rupert’s bone marrow Coincidentally Higgins was only given the opportunity to donate bone marrow because there was a different kind of match standing in line for the donor register In an interview with BBC Higgens said that he hopped in line after seeing a woman who he liked waiting in the queue When he registered to be a donor and found out that he was a match for Rupert, he didn’t hesitate to undergo the operation for a transplant Not only did the woman go on to become Higgins’s wife his bone marrow donation saved Rupert’s life and he hopes that others will be inspired to do the same If you’ve got that opportunity to provide bone marrow that someone desperately needs then you have to do that he told BBC It’s the right thing to do',
         'features': {
             'entities': {
             'emotion': true,
