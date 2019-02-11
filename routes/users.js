@@ -54,14 +54,14 @@ router.post('/emotionText', function(req, res) {
             res.send(response.entities[0].emotion);
       });
 });
-router.get("/getTodayData", function(req, res) {
+router.get("/getTodayDatas", function(req, res) {
     var json = {};
     var uniqueArr=[];
     TmpData.find().then((data ,e)=>{
         if (e)
         res.error("Failed to call database");
         else{
-            console.log(data);
+           
             for( var i =0 ; i<data.length;i++){
                 //eg . news/law > law
                 var lastCategory = data[i].category.slice(data[i].category.lastIndexOf("/")+1);
