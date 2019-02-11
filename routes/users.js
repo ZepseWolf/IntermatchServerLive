@@ -16,6 +16,15 @@ var discovery = new DiscoveryV1({
     iam_apikey: '1ImX0abYJPqlYzm56WzIr7O0Hd8UmAjPMV96GRuhuo9s', 
     url: 'https://gateway-syd.watsonplatform.net/discovery/api'
 });
+var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
+var naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
+  version: '2018-11-16',
+  username: 'e3743498-4f46-4afe-aa58-a20d66979b5b',
+  password: 'y1VlHUwSnCwU',
+  url: 'https://gateway.watsonplatform.net/natural-language-understanding/api'
+});
+
+
 // var personalityInsights = new PersonalityInsightsV3({
 //     version: '2017-10-13',
 //     username: 'e017ffe0-0eec-40b1-9cbc-5f22de364688',
