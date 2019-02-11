@@ -51,7 +51,7 @@ router.post('/emotionText', function(req, res) {
         if (err)
           console.log('error:', err);
         else
-            res.send(response.entities[0].emotion);
+            res.send(response);
       });
 });
 router.get("/getTodayDatas", function(req, res) {
