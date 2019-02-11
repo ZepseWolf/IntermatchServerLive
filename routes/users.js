@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const  _ = require('lodash');
+var timeout = require('connect-timeout');
 var UserSchema = require('../models/userSchema');
 const {EmployeeSchema} = require('../models/employeeSchema.js');
 const {CompanySchema} = require('../models/companySchema.js');
@@ -35,6 +36,39 @@ var naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
 router.get('/', function(req, res, next) {
  res.send('respond with a resource');
 });
+router.get("/getTodayData", function(req, res) {
+    var json = {};
+    var uniqueArr=[];
+    TmpData.find().then((data ,e)=>{
+        if (e)
+        res.error("Failed to call database");
+        else{
+            console.log(data);
+            for( var i =0 ; i<data.length;i++){
+                //eg . news/law > law
+                var lastCategory = data[i].category.slice(data[i].category.lastIndexOf("/")+1);
+                if(!uniqueArr.includes(lastCategory)){
+                    json[lastCategory]= [];
+                    json[lastCategory].push({
+                        id: data[i]._id,
+                        title: data[i].fileName,
+				        description : data[i].text
+                    })
+                    uniqueArr.push(lastCategory);
+                }
+                else{
+                    json[lastCategory].push({
+                        id: data[i]._id,
+                        title: data[i].fileName,
+				        description : data[i].text
+                    })
+                }
+            }
+            res.send(json)
+
+        }
+    });
+});
 router.get('/newDatas', function(req, res) {
     var hour23 = 82800000;
     TmpData.findOne().then((data ,e)=>{
@@ -58,38 +92,69 @@ router.get('/newDatas', function(req, res) {
     });
 });
 router.get('/getCategory', (req,res)=>{
-    discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`},function(data,e){
+    console.log("Meowss");
+    TmpData.find().then((tmpdb , e )=>{
         if (e)
-        res.send(e);
+        console.log("Error od mongodb is : ",e)
         else
         {
-            for(var x =0 ; x < data.matching_results;x++){
-                DocumentSchema.findOneAndUpdate({
-                    _id : data.results[x].id
-                },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
-                {upsert:true,new:true}).then((data,err) =>{
-                    if (err)
-                    console.log(err);
-            
-                    else console.log(data);
-                    // set data
-                });
-            }
-        }
-        res.send(data.results.enriched_text);
-    });
-    // TmpData.find().then((data , e )=>{
-    //     if (e)
-    //     console.log("Error is : ",e)
-    //     else
-    //     {
-    //         for(var i = 0 ; i< data.lenght; i++){
+            for(var c = 0 ; c< tmpdb.length; c++){
                 
-    //             discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`}).then((data))
-    //         }
-    //     }
+                discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`,filter:`_id:${tmpdb[c]._id}`},function(e,data){
+                    if (e)
+                    console.log(e);
+                    else{
+                    //    for (let i = 0, p = Promise.resolve(); i < data.matching.results; i++) {
+                    //     p = p.then(_ => new Promise(resolve =>
+                    //         DocumentSchema.findOneAndUpdate({
+                    //             _id : data.results[x].id
+                    //         },{$set: {category: data.results[x].enriched_text.categories[0].label.replace("/", "")}},
+                    //         {upsert:true,new:true}).then((data,err) =>{
+                    //             if (err)
+                    //             console.log(err);
+                        
+                    //             else {
+                    //                 console.log(data);
+                    //                 resolve();  
+                    //             }
+                    //             // set data
+                    //         })
+                    //     ));
+                    // }
+                    DocumentSchema.findOneAndUpdate({
+                        _id : data.results[0].id
+                    },{$set: {category: data.results[0].enriched_text.categories[0].label}},
+                    {upsert:true,new:true}).then((data,err) =>{
+                        if (err)
+                        console.log(err);
+                
+                        else console.log(data);
+                        // set data
+                    });
+                    console.log("CATEGORYYYY : ",data.results[0].enriched_text.categories[0].label);
+                    TmpData.findOneAndUpdate({
+                        _id : data.results[0].id
+                    },{$set: {category: data.results[0].enriched_text.categories[0].label}},
+                    {upsert:true,new:true}).then((data,err) =>{
+                        if (err)
+                        console.log(err);
+                
+                        else console.log(data);
+                        // set data
+                    });    
+                            
+                        
+                
+                       // 
+                    }
+                   
+                })
+           }
+            res.send("donzzes ");
+        }
         
-    // })
+    });
+    
 });
 router.post('/addDiscovery', (req,res)=>{
     //Adding file into datas.json then pushing into watson
@@ -131,25 +196,19 @@ discovery.addDocument({ environment_id: '17bc5cf7-1be3-4f8e-a06f-9ddec7317aec',
             console.log(JSON.stringify(data, null, 2));
             res.send("Hey it work");
         }
-    }).then(()=>{
-        
     });
 });
 router.get('/useReport', (req,res)=>{
-    DocumentSchema.findOneAndUpdate({
-        _id : "083e23b5-ac0b-46bc-8c94-9179c68be176"
-    },{$set: {category: "meow "}},{upsert:true,new:true}).then((data,err) =>{
-        if (err)
-        res.send(err);
-
-        else res.send(data);
-        // set data
-    });
-//     var json = {
-//         "text" : "Greenland has gone through an unprecedented period of ice loss within the last two decades. The Grace satellites revealed a four-fold increase in mass being lost from Greenland's ice sheet from 2003-2013. The study in Proceedings of the National Academy of Sciences shows that ice loss subsequently stalled for 12-18 months. The research reveals how different areas of Greenland might contribute to sea-level rise in future. Scientists concerned about sea levels have long focused on Greenland's south-east and north-west regions, where glaciers continually force large chunks of ice into the Atlantic Ocean. But the largest sustained acceleration in ice loss from early 2003 to mid-2013 occurred in south-west Greenland, which is largely devoid of these large glaciers. ?meow?Whatever this was, it couldn't be explained by glaciers, because there aren't many there,?meow? said the study's lead author Michael Bevis, from The Ohio State University. ?meow?It had to be the surface mass - the ice was melting inland from the coastline.?meow? The ice melt accelerations in this region tracked a weather phenomenon known as the North Atlantic Oscillation (NAO). When in a particular (?meow?negative?meow?) phase, the NAO enhances summertime warming and the solar radiation that reaches the Earth's surface, while reducing snowfall - especially in western Greenland. The researchers believe the melting in south-west Greenland is a combination of climate change and conditions brought on by the NAO. ?meow?These oscillations have been happening forever... so why only now are they causing this massive melt? It's because the atmosphere is, at its baseline, warmer. The transient warming driven by the North Atlantic Oscillation was riding on top of more sustained global warming,?meow? said Prof Bevis. The consequence of this finding is that south-west Greenland, which had not been considered a serious threat, now looks as if it will become a major future contributor to sea-level rise. ?meow?We knew we had one big problem with increasing rates of ice discharge by some large outlet glaciers,?meow? said Prof Bevis. ?meow?But now we recognise a second serious problem: Increasingly, large amounts of ice mass are going to leave as meltwater, as rivers that flow into the sea.?meow? GPS systems in place now monitor Greenland's ice around most of its margin, but the network is sparse in the south-west. Because the Grace satellites stopped taking data in 2016, it remains unclear whether the pause in melting - which began in 2013 - has now stopped or is still ongoing. Andrew Shepherd, professor of Earth observation at the University of Leeds, UK, who was not involved with the latest study, told BBC News: ?meow?This study goes a long way towards explaining why Greenland's ice sheet stopped melting in 2013, but unfortunately the Grace satellite died in 2016 just when things started to get interesting. ?meow?So I think we will have to look elsewhere to understand whether the pause has ended and whether it affected the ice flow.?meow? The paper in PNAS also suggests the pause is linked to a change in the phase of the NAO - from negative to positive. Grace (the Gravity Recovery and Climate Experiment) consisted of two Earth-orbiting satellites which took detailed measurements of gravity-field anomalies. A joint mission between Nasa and the German Aerospace Center, they were launched in March 2002. A replacement pair were put up last year, but have yet to be brought fully online. Last month, researchers reported that the Greenland melt was unprecedented in 350 years. A US research team examined ice cores from western Greenland that record the behaviour of the ice sheet dating back to 1650. The group's analysis indicated that an uptick in melting began soon after the onset of industrial-era Arctic warming in the mid-1800s, and that the decade 2004-2013 experienced more sustained and intense melting than any other 10-year period in the 350-year record."
-//     }
-//     json.text= json.text.replace(/\?meow\?/g, '"');
-//     res.send(json);
+    TmpData.find().then((tmpdb , e )=>{
+        if (e)
+        console.log("Error od mongodb is : ",e)
+        else
+        {
+            discovery.query({ environment_id: `17bc5cf7-1be3-4f8e-a06f-9ddec7317aec`, collection_id: `d47a72a6-07c6-4aad-aa36-4944659d6589`,filter:`_id:${tmpdb[0]._id}`},function(e,data){
+                res.send(data)
+            })
+        }
+    })
 });
 router.post('/register', (req,res)=>{
   var newID = ObjectID.createPk();
@@ -574,7 +633,7 @@ router.patch('/feed/:id', (req,res)=>{
                                     })
                                 }
                                 console.log(employeeID);
-                                if(employeeID.lenght < 0 ){
+                                if(employeeID.length < 0 ){
                                     console.log("Empty Matching")
                                     res.send([]);
                                 }else{

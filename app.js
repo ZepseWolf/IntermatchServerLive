@@ -9,7 +9,6 @@ var usersRouter = require('./routes/users');
 
 //app is an express app
 var app = express();
-
 var mongoose =require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://admin1234:meow1234@ds046677.mlab.com:46677/intermatch',{useNewUrlParser: true});
