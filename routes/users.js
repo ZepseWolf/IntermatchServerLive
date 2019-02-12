@@ -43,7 +43,7 @@ router.post('/emotionText', function(req, res) {
             'entities': {
             'emotion': true,
             'sentiment': true,
-            'limit': 4
+            'limit': 2
             }
          }
     }
