@@ -34,7 +34,8 @@ var naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
 // });
 /* GET users listing. */
 router.get('/', function(req, res, next) {
- res.send('respond with a resource');
+ res.send('respond with a resources');
+
 });
 router.post('/emotionText', function(req, res) {
     var parameters = {
