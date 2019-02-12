@@ -54,7 +54,7 @@ router.post('/emotionText', function(req, res) {
             res.send(response);
       });
 });
-router.get("/getTodayDatas", function(req, res) {
+router.get("/getTodayData", function(req, res) {
     var json = {};
     var uniqueArr=[];
     TmpData.find().then((data ,e)=>{
