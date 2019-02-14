@@ -37,7 +37,7 @@ router.get('/', function(req, res, next) {
  res.send('respond with a resources');
 
 });
-app.post('/thisPosts', (req, res) => {
+router.post('/thisPosts', (req, res) => {
     console.log("Start here ");
     var temp = new TmpData({
         _id: "hey",
