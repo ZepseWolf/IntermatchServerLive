@@ -37,24 +37,7 @@ router.get('/', function(req, res, next) {
  res.send('respond with a resources');
 
 });
-router.post('/thisPosts', (req, res) => {
-    console.log("Start here ");
-    var temp = new TmpData({
-        _id: "hey",
-        fileName : "fileName",
-        text: "text"
-    });
-    temp.save().then((SpecificData,err)=>{
-        if(err){
-            console.log(err)
-            res.send(err)
-        }else{
-            res.send("Saved boii")
-        }
-        
-    });
-   
-});
+
 router.post('/emotionText', function(req, res) {
     var parameters = {
         'text': req.body.text,
