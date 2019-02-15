@@ -12,7 +12,7 @@ var app = express();
 var mongoose =require('mongoose');
 mongoose.Promise = global.Promise;
 //mongoose.connect('mongodb://admin1234:meow1234@ds046677.mlab.com:46677/intermatch',{useNewUrlParser: true});
-mongoose.connect('mongodb+srv://L33903:NYPfyp339@cluster0-uv7is.mongodb.net/test?retryWrites=true',{useNewUrlParser: true});
+mongoose.connect('mongodb://admin1234:meow1234@ds046677.mlab.com:46677/intermatch',{useNewUrlParser: true});
 //passport
 var passport = require('passport');
 var session = require('express-session');
